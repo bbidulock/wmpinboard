@@ -165,7 +165,7 @@ notes_io(int save)
   char t[STRING_BUF_SIZE];
   FILE *file;
   int pid = (int) getpid();
-  static int sizes[6];
+  static int sizes[7];
   sizes[0] = size_0;
   sizes[1] = size_1;
   sizes[2] = size_2;
@@ -973,26 +973,32 @@ parse_argv(int argc, char **argv)
       case 'h': help();
       case 'i': action(M_INFO, 0);
       case 'v':
-        printf("wmpinboard v" VERSION "\n\ncompile-time configuration:\n"
-          "  - maximal number of notes is %d\n"
 #if TIMEOUT == 0
-          "  - edit mode timeout is disabled by default\n"
+#define PRINT1    "  - edit mode timeout is disabled by default\n"
 #else
-          "  - default edit mode timeout is %d seconds\n"
+#define PRINT1    "  - default edit mode timeout is %d seconds\n"
 #endif
-          "  - wear & tear of notes (creases) is "
 #ifdef CREASES
-          "enabled\n"
+#define PRINT2    "enabled\n"
 #else
-          "disabled\n"
+#define PRINT2    "disabled\n"
 #endif
 #ifndef FUNSTUFF
-          "  - FUNSTUFF is disabled  :-/\n"
+#define PRINT3    "  - FUNSTUFF is disabled  :-/\n"
+#else
+#define PRINT3
 #endif
-          , MAX_NOTES
 #if TIMEOUT != 0
-          , TIMEOUT
+#define PRINT4    , TIMEOUT
 #endif
+        printf("wmpinboard v" VERSION "\n\ncompile-time configuration:\n"
+          "  - maximal number of notes is %d\n"
+	  PRINT1
+          "  - wear & tear of notes (creases) is "
+          PRINT2
+          PRINT3
+          , MAX_NOTES
+          PRINT4
           );
         exit(EXIT_SUCCESS);
       default : exit(EXIT_FAILURE);
@@ -1532,7 +1538,7 @@ handle_ButtonRelease(XEvent *event)
         }
       } else {  /* moved */
         if (state.cur_note >= 0) {
-          if (string_empty(ndata[state.cur_note].text, 0)) {  /* new note */
+          if (note_empty(state.cur_note)) {  /* new note */
             animate_note(4);
             set_kbfocus(1);
             set_mode(M_EDIT);
@@ -1711,7 +1717,14 @@ handle_ButtonRelease(XEvent *event)
         {
           if (state.abar_pressed < 4) {  /* clicked on number */
             char c = state.a_edit[state.abar_pressed];
-            char delta = state.button == 1 ? 1 : -1;
+            char delta;
+            switch (state.button) {
+              case 1:  delta = 1;   break;  /* Left mouse button */
+              case 3:  delta = -1;  break;  /* Right mouse button */
+              case 4:  delta = 1;   break;  /* Scrollwheel up */
+              case 5:  delta = -1;  break;  /* Scrollwheel down */
+              default: delta = 0;   break;  /* Unknown button; ignore */
+            }
 
             switch (state.abar_pressed) {
               case 0:  c = (24+c+delta)%24;  break;
@@ -1849,7 +1862,7 @@ void
 handle_KeyPress(XEvent *event)
 {
   KeySym ksym;
-  unsigned char ch[4];
+  char ch[4];
   char *s;
   int i, j = 0;
 
@@ -1910,8 +1923,9 @@ handle_KeyPress(XEvent *event)
     }
   } else {
     if (InputContext) {
-      j = XmbLookupString(InputContext, &event->xkey, (char*) ch, sizeof(ch),
-        &ksym, 0);
+      Status status_return;
+      j = XmbLookupString(InputContext, &event->xkey, ch, sizeof(ch),
+        &ksym, &status_return);
     } else {
       j = XLookupString(&event->xkey, (char*) ch, sizeof(ch), &ksym,
         &state.compose);
@@ -2120,7 +2134,7 @@ main(int argc, char **argv)
   init();                  /* initialize X window */
   XSetCommand(display, mainwin, argv, argc);
   XMapWindow(display, mainwin);
-  init_xlocale();          /* initialize input context */
+/*  init_xlocale();          /* initialize input context */
 
   /* initialize internal images, palette, cursors */
   bbar = get_xpm((char**) bbar_xpm);
