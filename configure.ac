@@ -11,7 +11,7 @@ AC_ISC_POSIX
 AC_LANG_C
 
 dnl use POSIX and BSD stuff where available
-CFLAGS="$CFLAGS -D_BSD_SOURCE -D_POSIX_SOURCE=199506L"
+CFLAGS="$CFLAGS -D_DEFAULT_SOURCE -D_POSIX_SOURCE=199506L"
 
 dnl additional compile flags when using gcc
 if test x$GCC = xyes; then

@@ -14,7 +14,8 @@ cscope.*
 .deps/
 Makefile
 Makefile.in
-wmblob
+wmpinboard
+wmpinboard.spec
 *.o
 scripts/
 stamp-h*

@@ -219,7 +219,11 @@ notes_io(int save)
     }
   } else {  /*** LOAD ***/
     int rev;
+    void *dummy;
+    int dummy2;
 
+    (void) dummy;
+    (void) dummy2;
     if (!fread(s, 5, 1, file) || strncmp(s, header, 4)) {  /* check header */
       fprintf(stderr, "Fatal error: Corrupt data file encountered.\n"
         "Delete `~%s' to start over.\n", rc_file_name);
@@ -238,30 +242,30 @@ notes_io(int save)
       exit(EXIT_FAILURE);
     }
 
-    fgets(opts.font, sizeof(opts.font), file);
+    dummy = fgets(opts.font, sizeof(opts.font), file);
     if (strlen(opts.font) && opts.font[strlen(opts.font)-1] == '\n')
       opts.font[strlen(opts.font)-1] = '\0';
 
     if (rev >= 4) {
-      fgets(opts.theme, sizeof(opts.theme), file);
+      dummy = fgets(opts.theme, sizeof(opts.theme), file);
       if (strlen(opts.theme) && opts.theme[strlen(opts.theme)-1] == '\n')
         opts.theme[strlen(opts.theme)-1] = '\0';
     }
     if (rev >= 6) {
-      fgets(opts.alarm_cmd, sizeof(opts.alarm_cmd), file);
+      dummy = fgets(opts.alarm_cmd, sizeof(opts.alarm_cmd), file);
       if (strlen(opts.alarm_cmd) && opts.alarm_cmd[strlen(opts.alarm_cmd)-1] ==
         '\n')
       {
         opts.alarm_cmd[strlen(opts.alarm_cmd)-1] = '\0';
       }
     }
-    if (rev >= 3) fread(&pid, sizeof(pid), 1, file);  /* last writer's PID */
+    if (rev >= 3) dummy2 = fread(&pid, sizeof(pid), 1, file);  /* last writer's PID */
     if (rev >= 2)  /* state.state_bits */
-      fread(&state.state_bits, sizeof(state.state_bits), 1, file);
+      dummy2 = fread(&state.state_bits, sizeof(state.state_bits), 1, file);
     else
       state.state_bits = 0;
     if (rev >= 5) /* counter */
-      fread(&state.counter, sizeof(state.counter), 1, file);
+      dummy2 = fread(&state.counter, sizeof(state.counter), 1, file);
     else
       state.counter = 0;
 
@@ -686,7 +690,7 @@ action(actions type, const void *data)
         if (strlen(data) >= sizeof(opts.font)) {
           /* avoid trouble when retrieving saved data... */
           fprintf(stderr, "Fatal error: Specified font descriptor exceeds "
-            "buffer size of %d bytes.\n", sizeof(opts.font));
+            "buffer size of %lu bytes.\n", sizeof(opts.font));
           exit(EXIT_FAILURE);
         }
         strcpy(opts.font, data);
@@ -702,7 +706,7 @@ action(actions type, const void *data)
       } else {
         if (strlen(data) >= sizeof(opts.theme)) {
           fprintf(stderr, "Fatal error: Specified theme file location exceeds "
-            "buffer size of %d bytes.\n", sizeof(opts.theme));
+            "buffer size of %lu bytes.\n", sizeof(opts.theme));
           exit(EXIT_FAILURE);
         }
         strcpy(opts.theme, data);
@@ -721,7 +725,7 @@ action(actions type, const void *data)
       } else {
         if (strlen(data) >= sizeof(opts.alarm_cmd)) {
           fprintf(stderr, "Fatal error: Specified theme file location exceeds "
-            "buffer size of %d bytes.\n", sizeof(opts.alarm_cmd));
+            "buffer size of %lu bytes.\n", sizeof(opts.alarm_cmd));
           exit(EXIT_FAILURE);
         }
         strcpy(opts.alarm_cmd, data);
@@ -1268,7 +1272,7 @@ animate_abar(int in)
 void
 animate_note(int style)
 {
-  static const int seq[10] = { 2, 3, 6, 9, 12, 12, 9, 6, 3, 2 };
+  static const int seq[11] = { 2, 3, 6, 9, 12, 12, 9, 6, 3, 2, 0 };
   XRectangle mask[5] = { { 6, 2, 52, 60 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
     { 0, 0, 0, 0 }, { 0, 0, 0, 0 } };
   int i, j;
@@ -2134,7 +2138,7 @@ main(int argc, char **argv)
   init();                  /* initialize X window */
   XSetCommand(display, mainwin, argv, argc);
   XMapWindow(display, mainwin);
-/*  init_xlocale();          /* initialize input context */
+/*  init_xlocale();          * initialize input context */
 
   /* initialize internal images, palette, cursors */
   bbar = get_xpm((char**) bbar_xpm);
@@ -2255,7 +2259,8 @@ main(int argc, char **argv)
         char buf[STRING_BUF_SIZE+2];
         strcpy(buf, opts.alarm_cmd);
         strcat(buf, " &");
-        system(buf);
+        if (system(buf))
+		exit(1);
       }
       prepare_alarm_anim();
       state.alarm.phase = 0;

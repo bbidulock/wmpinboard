@@ -298,7 +298,7 @@ cb_copy(const char *text, int len)
   if (cb_buffer) free(cb_buffer);
   l = len < 0 ? strlen(text) : len;
   cb_buffer = smalloc(l+1);
-  strncpy(cb_buffer, text, l);
+  strncpy((char *)cb_buffer, text, l);
   cb_buffer[l] = 0;
 
   XSetSelectionOwner(display, XA_PRIMARY, win, CurrentTime);
