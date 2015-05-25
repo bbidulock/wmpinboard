@@ -1,0 +1,54 @@
+ wmpinboard
+============
+
+ License
+---------
+
+wmpinboard is distributed under the terms of the GNU General Public license,
+revision 2, or--at your choice--any later revision.  A copy of said document
+is included with this source package.
+
+ Requirements
+--------------
+
+ - an ANSI-compliant C compiler (preferably, GCC or one of its descendants)
+ - X11R6 including header files (installed separately as "xdevel" or similar
+   by some distributions)
+ - the XPM library
+ - wmpinboard is recommended to be run on a high-color (15bit or above) display
+
+wmpinboard has reportedly been successfully compiled on the following
+platforms:
+
+ - Linux 2.0.x through 2.2.x, various setups
+ - FreeBSD 3.1
+ - Solaris 2.6
+
+Reports about other platforms are always welcome.
+
+ Installation
+--------------
+
+If you're too lazy to read the generic instructions in the INSTALL 
+file, or already know how to install autoconf'ed programs in principle, 
+here are the quick instructions that should suffice in 99% of all cases:
+
+  $ ./configure
+  $ make
+  $ make install-strip
+
+The default prefix is "/usr/local".  If you want the binary and man 
+page to go anywhere else, use configure's "--prefix" switch (see 
+`configure --help`).  For further compile-time options, see configure's 
+"--help" output.
+
+ Upgrading from earlier versions
+---------------------------------
+
+If you're upgrading to wmpinboard 0.7+ from an earlier version, existing notes
+will get lost due to some major changes concerning its data file format.
+You can avoid this by running the included PERL script as the user in
+question beforehand:
+
+  $ perl /path/to/wmpinboard-x.x/wmpb-convert.pl
+

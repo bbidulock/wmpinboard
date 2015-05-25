@@ -1,0 +1,27 @@
+ wmpinboard
+============
+
+ Things TO DO
+--------------
+
+ - wait some more time, finally declare it stable and name it v1.0
+
+ Things perhaps TO DO
+----------------------
+
+ Things I'm NOT going TO DO
+----------------------------
+
+ - Make wmpinboard pop up any external windows.  Why?
+
+     See the man page, section "FREQUENTLY ASKED QUESTIONS".
+
+ - Render rough sketches of the notes' contents in pinboard view.
+
+     Judging by my personal experience, the notes' texts tend to cover them
+     uniformly due to the limitation in size, so doing this would invariably
+     result in just a mess of dark blobs.
+
+
+Further suggestions?  Mail to <gomar@mindless.com>.
+

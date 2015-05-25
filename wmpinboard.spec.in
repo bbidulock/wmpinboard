@@ -1,0 +1,48 @@
+%define name @PACKAGE@
+%define version @VERSION@
+%define release 1
+%define prefix /usr/local
+
+Summary:	Window Maker dock applet resembling a miniature pinboard
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+Copyright:	GPL
+Packager:	Marco Goetze <gomar@mindless.com>
+Url:		http://www.tu-ilmenau.de/~gomar/stuff/%{name}/#download
+Group:		X11/Utilities
+Source:		%{name}-%{version}.tar.gz
+Buildroot:	/home/gomar/Projects/BUILD/%{name}-%{version}-%{release}-root
+Requires:	xpm
+
+%description
+wmpinboard is a Window Maker dock applet resembling a miniature 
+pinboard, intended to somewhat relieve heavily littered desktops by 
+allowing you to place reminders on a graphical on-screen pinboard 
+rather than producing a mess of real notes all around your keyboard.  
+Features include support for arbitrary 6x10 X fonts, XLocale support, 
+drawing capabilities, alarms, animations, themeability, and command 
+line interoperability.
+
+%prep
+%setup
+
+%build
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
+if echo "$RPM_OPT_FLAGS" | grep -- -DBUILD_STATIC >/dev/null 2>&1; then
+  make static
+else
+  make
+fi
+
+%install
+make prefix=$RPM_BUILD_ROOT%{prefix} install-strip
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(644,root,root)
+%doc AUTHORS COPYING CREDITS ChangeLog NEWS README TODO %{name}.lsm
+%attr(755,root,root) %{prefix}/bin/%{name}
+%attr(755,root,root) %{prefix}/man/man1/%{name}.1

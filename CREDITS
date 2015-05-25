@@ -1,0 +1,9 @@
+ wmpinboard credits
+--------------------
+ - written by Marco G"otze, <mailto:gomar@mindless.com>
+ - closer looks at other WM dock apps as well as the Xlib documentation were
+   of some help
+ - the images were created using The GIMP
+ - wmpinboard uses XIC-related keyboard handling code taken from RXVT's source
+ - thanks to various people for making suggestions and pointing out bugs
+

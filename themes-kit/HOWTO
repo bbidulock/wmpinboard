@@ -1,0 +1,95 @@
+
+                How to create a theme for wmpinboard v0.99.1+
+              ================================================
+
+ Overview
+----------
+
+wmpinboard is themeable in that its pinboard, edit mode and alarm 
+panels, and the digits used on the alarm panel, as well as the location 
+of the board's "TO DO" label (via which notes are created) are run-time 
+configurable using theme files.  A wmpinboard theme file is a text file 
+with a recommended file name extension of ".wmpbtheme".
+
+ Theme file format
+-------------------
+
+As stated above, a wmpinboard theme file is a text file in a specific 
+format.  Roughly, it consists of a header section and one or two pixmap 
+data sections:
+
+  WMPBtheme
+  [header fields]
+  # comments
+
+  [pixmap[s]]
+
+The various sections are separated by zero-length lines.
+
+Each theme file has to start with the keyword "WMPBtheme", designating 
+the file to be a wmpinboard theme file.  Note that this identifier is
+checked for case-sensitively.
+
+Following on the same line or on the next, a "label" header field may
+be specified like this:
+
+  header = x1/y1, x2/y2
+
+x1, y1, etc. are integer numbers; white space within this specification 
+is optional.  The delimiters in between the numbers can be chosen 
+almost arbitrarily (when parsing, wmpinboard regards any non-digit 
+characters as delimiters).  The purpose of this field is to specify a 
+rectangular area (x1/y1 upper left, x2/y2 lower right corner; 
+coordinates are inclusive) identifying a modified location of the 
+default "TO DO" label, relative to the board pixmap.  The given 
+coordinates have to fulfil the following conditions:
+
+  x1, x2 = [0..51]
+  y1, y2 = [0..59]
+  x1 < x2
+  y1 < y2
+  (x2-x1) * (y2-y1) >= 16
+
+Furthermore, the header section may contain comments, which wmpinboard
+considers everything after `#'s.
+
+Each of the pixmap sections (only one is required) has to be standard 
+(C source) pixmap data WITH NO INTERMEDIATE ZERO-LENGTH LINES.  Since 
+themes are meant to work in high-color modes only, you needn't worry 
+about the number of colors used, or other palette issues.  To ease the 
+creation of custom pixmaps, this package includes the default pixmaps 
+as templates.
+
+Which themeable portion of wmpinboard a pixmap represents is determined
+by its size:
+
+  52x60 pinboard
+  58x30 edit mode panel
+  58x28 alarm panel
+  60x 9 alarm panel digits (6x9 each)
+
+To illustrate this formal description, the default and a sample theme 
+are included as ".wmpbtheme" files.  The former defines a label 
+location as well as all the pixmaps, the latter a label location and an 
+alternative board pixmap.
+
+ Restrictions
+--------------
+
+Generally, custom pixmap sizes are NOT supported, and neither is 
+transparency, meaning you'll have to stick with the design-implied 
+dimensions.  Also, the panels' buttons' area-to-function mapping is 
+fixed.
+
+There should be no lines longer than 127 characters in a theme file, or 
+else unpredictable things may happen.
+
+ Submission of themes
+----------------------
+
+If you've created a custom theme you wish to share with other users of 
+wmpinboard, mail it to <gomar@mindless.com>.  It will then most likely 
+be added to the program's home page at
+
+  <http://www.tu-ilmenau.de/~gomar/stuff/wmpinboard/>
+
