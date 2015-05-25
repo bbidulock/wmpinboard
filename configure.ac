@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([wmpinboard], [1.0])
+AC_INIT([wmpinboard], [1.0.1])
 AM_INIT_AUTOMAKE([-Wall silent-rules])
 AM_CONFIG_HEADER(config.h)
 
