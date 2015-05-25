@@ -1,7 +1,18 @@
 ## Process this file with automake to produce Makefile.in
 
 SUBDIRS = src man
-EXTRA_DIST = CREDITS TODO wmpb-convert.pl wmpinboard.lsm wmpinboard.spec.in man/Makefile.* man/wmpinboard.* xpm/* themes-kit/*
+EXTRA_DIST = CREDITS TODO wmpb-convert.pl wmpinboard.lsm \
+	     xpm/abar.xpm \
+	     xpm/bbar.xpm \
+	     xpm/digits.xpm \
+	     xpm/pinboard.xpm \
+	     themes-kit/abar.xpm \
+	     themes-kit/bbar.xpm \
+	     themes-kit/board.xpm \
+	     themes-kit/default.wmpbtheme \
+	     themes-kit/digits.xpm \
+	     themes-kit/HOWTO \
+	     themes-kit/sample.wmpbtheme
 
 bin-dist: all
 	@test -x ../make_bin_package || ( echo "Not in development environment."; false )
