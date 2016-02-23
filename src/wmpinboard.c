@@ -177,6 +177,8 @@ notes_io(int save)
   s_block();
 
   s[sizeof(s)-1] = '\0';
+  if (!getenv("HOME"))
+    die("HOME environment variable undefined.");
   strncpy(s, getenv("HOME"), sizeof(s));
   if (sizeof(s)-strlen(s)-1 < strlen(rc_file_name)+strlen(ext))
     die("Buffer too small in notes_io().");
