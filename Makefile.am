@@ -7,12 +7,19 @@ EXTRA_DIST = CREDITS TODO wmpb-convert.pl wmpinboard.lsm \
 	     xpm/digits.xpm \
 	     xpm/pinboard.xpm \
 	     themes-kit/abar.xpm \
+	     themes-kit/amiga.wmpbtheme \
 	     themes-kit/bbar.xpm \
 	     themes-kit/board.xpm \
 	     themes-kit/default.wmpbtheme \
 	     themes-kit/digits.xpm \
 	     themes-kit/HOWTO \
-	     themes-kit/sample.wmpbtheme
+	     themes-kit/metal.wmpbtheme \
+	     themes-kit/nolabel.wmpbtheme \
+	     themes-kit/paranoid.wmpbtheme \
+	     themes-kit/sample.wmpbtheme \
+	     themes-kit/tux.wmpbtheme \
+	     themes-kit/wmakerstyle.wmpbtheme \
+	     themes-kit/xmas.wmpbtheme
 
 bin-dist: all
 	@test -x ../make_bin_package || ( echo "Not in development environment."; false )
