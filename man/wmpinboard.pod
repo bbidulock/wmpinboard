@@ -367,7 +367,7 @@ into four groups: green, white/yellow, reddish, blue.
 
 =item ([Shift]-)[Tab]
 
-Cycles (backwards) through availabe note colors.
+Cycles (backwards) through available note colors.
 
 =back
 
