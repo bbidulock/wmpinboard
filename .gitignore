@@ -15,6 +15,7 @@ cscope.*
 Makefile
 Makefile.in
 wmpinboard
+wmpinboard.1
 wmpinboard.spec
 *.o
 scripts/

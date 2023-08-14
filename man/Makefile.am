@@ -6,3 +6,5 @@ EXTRA_DIST = wmpinboard.pod
 
 wmpinboard.1: wmpinboard.pod
 	-pod2man --release=$(VERSION) --center=wmpinboard wmpinboard.pod wmpinboard.1
+
+MAINTAINERCLEANFILES = wmpinboard.1
